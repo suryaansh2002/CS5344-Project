@@ -1,0 +1,4 @@
+/multimodal-hate-speech
+.DS_Store
+/env
+*.h5

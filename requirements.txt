@@ -1,0 +1,9 @@
+kaggle
+json
+pandas
+os
+Pillow
+matplotlib
+re
+numpy
+tensorflow
