@@ -8,7 +8,9 @@ from collections import Counter
 from PIL import Image
 import random
 from torchvision import transforms
-from textattack.augmentation import WordNetAugmenter
+import nltk
+from nltk.corpus import wordnet
+
 
 # configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -108,11 +110,61 @@ df_hate = df[df["binary_label"] == 1]
 
 df_nothate_sampled = df_nothate.sample(n=75000, random_state=42)
 
-augmenter = WordNetAugmenter()  # synonym replacement
+# augmenters
+def synonym_replacement(text, n=2):
+    words = nltk.word_tokenize(text)
+    new_words = words.copy()
+    random_word_list = list(set([word for word in words if wordnet.synsets(word)]))
+    random.shuffle(random_word_list)
 
-def augment_text(text, num_augmentations=2):
-    augmented_texts = [augmenter.augment(text)[0] for _ in range(num_augmentations)]
-    return augmented_texts
+    num_replaced = 0
+    for word in random_word_list:
+        synonyms = wordnet.synsets(word)
+        if synonyms:
+            synonym_words = set()
+            for syn in synonyms:
+                for lemma in syn.lemmas():
+                    synonym_words.add(lemma.name().replace("_", " "))
+            synonym_words.discard(word)
+            if synonym_words:
+                new_words = [w if w != word else random.choice(list(synonym_words)) for w in new_words]
+                num_replaced += 1
+            if num_replaced >= n:
+                break
+    return ' '.join(new_words)
+
+def random_deletion(text, p=0.1):
+    words = nltk.word_tokenize(text)
+    if len(words) == 1:
+        return text
+    new_words = [word for word in words if random.uniform(0, 1) > p]
+    if len(new_words) == 0:
+        return random.choice(words)  # if all words deleted, return one
+    return ' '.join(new_words)
+
+def random_swap(text, n=2):
+    words = nltk.word_tokenize(text)
+    length = len(words)
+    for _ in range(n):
+        idx1, idx2 = random.sample(range(length), 2)
+        words[idx1], words[idx2] = words[idx2], words[idx1]
+    return ' '.join(words)
+
+def augment_text(text, num_augments=2):
+    methods = [synonym_replacement, random_deletion, random_swap]
+    augmented = []
+
+    for _ in range(num_augments):
+        method = random.choice(methods)
+        try:
+            aug_text = method(text)
+            augmented.append(aug_text)
+        except:
+            augmented.append(text)  # fallback to original
+
+    return augmented
+
+
 
 # generate
 augmented_data = []
