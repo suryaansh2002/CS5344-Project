@@ -2,3 +2,5 @@
 .DS_Store
 /env
 *.h5
+/DATA
+*.pth
