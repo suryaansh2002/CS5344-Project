@@ -12,6 +12,7 @@ from PIL import Image
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
 from itertools import product
+from tqdm import tqdm
 
 # --- CONFIGURATION ---
 logging.basicConfig(level=logging.INFO)
@@ -40,8 +41,8 @@ class MultiModalDataset(Dataset):
         self.data = dataframe
 
     def __len__(self):
-        return 100
-        # return len(self.data)
+        # return 100
+        return len(self.data)
 
     def __getitem__(self, idx):
         row = self.data.iloc[idx]
@@ -120,7 +121,7 @@ def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3,
     for epoch in range(epochs):
         running_loss = 0.0
         all_preds, all_labels = [], []
-        for imgs, texts, labels in dataloader:
+        for imgs, texts, labels in tqdm(dataloader):
             imgs, texts, labels = imgs.to(device), texts.to(device), labels.to(device)
             optimizer.zero_grad()
             outputs = model(imgs, texts)
@@ -133,14 +134,22 @@ def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3,
             all_preds.extend(preds)
             all_labels.extend(labels.cpu().numpy())
         
-        epoch_f1 = f1_score(all_labels, all_preds)
-        accuracy_score = np.mean(np.array(all_preds) == np.array(all_labels))
-        precision = precision_score(all_labels, all_preds)
-        recall = recall_score(all_labels, all_preds)
-        logging.info(f"Epoch {epoch+1}: Loss = {running_loss / len(dataloader):.4f}, F1 = {epoch_f1:.4f}, Accuracy = {accuracy_score:.4f}, Precision = {precision:.4f}, Recall = {recall:.4f}")
+        train_epoch_f1 = f1_score(all_labels, all_preds)
+        train_accuracy_score = np.mean(np.array(all_preds) == np.array(all_labels))
+        train_precision = precision_score(all_labels, all_preds)
+        train_recall = recall_score(all_labels, all_preds)
+
+        val_model(model, val_loader)
+        val_epoch_f1 = f1_score(all_labels, all_preds)
+        val_accuracy_score = np.mean(np.array(all_preds) == np.array(all_labels))
+        val_precision = precision_score(all_labels, all_preds)
+        val_recall = recall_score(all_labels, all_preds)
         
-        if epoch_f1 > best_f1:
-            best_f1 = epoch_f1
+        logging.info(f"Epoch {epoch+1}: Loss = {running_loss / len(dataloader):.4f}, Train F1 = {train_epoch_f1:.4f}, Train Accuracy = {train_accuracy_score:.4f}, Train Precision = {train_precision:.4f}, Train Recall = {train_recall:.4f}")
+        logging.info(f"Validation F1 = {val_epoch_f1:.4f}, Validation Accuracy = {val_accuracy_score:.4f}, Validation Precision = {val_precision:.4f}, Validation Recall = {val_recall:.4f}")
+
+        if train_epoch_f1 > best_f1:
+            best_f1 = train_epoch_f1
             patience_counter = 0
             torch.save(model.state_dict(), save_path)
         else:

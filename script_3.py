@@ -14,6 +14,7 @@ from torchvision.models import EfficientNet_B0_Weights
 from torch.utils.data import Dataset, DataLoader
 from transformers import AutoTokenizer
 import wandb
+from tqdm import tqdm
 
 wandb.login()
 
@@ -34,7 +35,7 @@ wandb.init(
 
 # --- CONFIGURATION ---
 logging.basicConfig(level=logging.INFO)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
 logging.info(f"Using device: {device}")
 
 # --- LOAD DATA ---
@@ -62,8 +63,8 @@ class MultiModalDataset(Dataset):
         self.data = dataframe
 
     def __len__(self):
-        return 100
-        # return len(self.data)
+        # return 100
+        return len(self.data)
 
     def __getitem__(self, idx):
         row = self.data.iloc[idx]
@@ -86,9 +87,9 @@ def collate_fn(batch):
     texts_padded = torch.nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=tokenizer.pad_token_id)
     return images, texts_padded, labels
 
-train_loader = DataLoader(MultiModalDataset(train_df), batch_size=2, shuffle=True, collate_fn=collate_fn)
-val_loader = DataLoader(MultiModalDataset(val_df), batch_size=2, shuffle=False, collate_fn=collate_fn)
-test_loader = DataLoader(MultiModalDataset(test_df), batch_size=2, shuffle=False, collate_fn=collate_fn)
+train_loader = DataLoader(MultiModalDataset(train_df), batch_size=128, shuffle=True, collate_fn=collate_fn)
+val_loader = DataLoader(MultiModalDataset(val_df), batch_size=128, shuffle=False, collate_fn=collate_fn)
+test_loader = DataLoader(MultiModalDataset(test_df), batch_size=128, shuffle=False, collate_fn=collate_fn)
 logging.info("Data loaders created.")
 
 # --- MODEL ---
@@ -145,7 +146,7 @@ def train_epoch(model, dataloader):
     logging.info("Training epoch...")
     model.train()
     running_loss = 0
-    for imgs, texts, labels in dataloader:
+    for imgs, texts, labels in tqdm(dataloader):
         imgs, texts, labels = imgs.to(device), texts.to(device), labels.to(device)
         optimizer.zero_grad()
         # logging.info('Model forward pass...')
@@ -189,7 +190,7 @@ best_model_path = "best_model.pth"
 # --- TRAIN LOOP WITH EARLY STOPPING ---
 logging.info("Starting training with early stopping...")
 
-for epoch in range(1, 50):  # set a high max epoch; early stopping will break earlier
+for epoch in range(1, 20):  # set a high max epoch; early stopping will break earlier
     loss = train_epoch(model, train_loader)
 
     val_f1, val_precision, val_recall, val_accuracy = evaluate(model, val_loader)
