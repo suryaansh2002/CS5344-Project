@@ -1,4 +1,4 @@
-import os
+from datasets.multimodal_dataset import MultiModalDataset, collate_fn
 import logging
 import numpy as np
 import pandas as pd
@@ -58,38 +58,15 @@ image_transform = transforms.Compose([
 ])
 
 # --- CUSTOM DATASET ---
-class MultiModalDataset(Dataset):
-    def __init__(self, dataframe):
-        self.data = dataframe
+train_dataset = MultiModalDataset(train_df, tokenizer, image_transform)
+logging.info("Custom dataset created.")
 
-    def __len__(self):
-        # return 100
-        return len(self.data)
-
-    def __getitem__(self, idx):
-        row = self.data.iloc[idx]
-        image_path = row['image_path']
-        try:
-            image = Image.open(image_path).convert("RGB")
-            image = image_transform(image)
-        except:
-            image = torch.zeros(3, 224, 224)
-
-        text = text_pipeline(row['cleaned_text'])["input_ids"].squeeze(0)
-        label = torch.tensor(row['binary_label'], dtype=torch.float32)
-        return image, text, label
-
-def collate_fn(batch):
-    images, texts, labels = zip(*batch)
-    images = torch.stack(images)
-    labels = torch.tensor(labels)
-    # Padding text sequences manually as Hugging Face tokenizer handles padding
-    texts_padded = torch.nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=tokenizer.pad_token_id)
-    return images, texts_padded, labels
-
-train_loader = DataLoader(MultiModalDataset(train_df), batch_size=128, shuffle=True, collate_fn=collate_fn)
-val_loader = DataLoader(MultiModalDataset(val_df), batch_size=128, shuffle=False, collate_fn=collate_fn)
-test_loader = DataLoader(MultiModalDataset(test_df), batch_size=128, shuffle=False, collate_fn=collate_fn)
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True,
+                          collate_fn=lambda x: collate_fn(x, tokenizer.pad_token_id))
+val_loader = DataLoader(MultiModalDataset(val_df, tokenizer, image_transform), batch_size=32, shuffle=False,
+                        collate_fn=lambda x: collate_fn(x, tokenizer.pad_token_id))
+test_loader = DataLoader(MultiModalDataset(test_df, tokenizer, image_transform), batch_size=32, shuffle=False,
+                         collate_fn=lambda x: collate_fn(x, tokenizer.pad_token_id))
 logging.info("Data loaders created.")
 
 # --- MODEL ---
