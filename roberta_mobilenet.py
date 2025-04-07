@@ -114,7 +114,7 @@ class MultiModalModel(nn.Module):
         return self.fc(combined).squeeze(1)
 
 # --- TRAIN FUNCTION WITH EARLY STOPPING ---
-def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3, epochs=50, save_path="best_model_script_4.pth"):
+def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3, epochs=50, save_path="best_model_roberta_mobilenet.pth"):
     model.train()
     best_f1 = 0
     patience_counter = 0
@@ -139,15 +139,9 @@ def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3,
         train_accuracy_score = np.mean(np.array(all_preds) == np.array(all_labels))
         train_precision = precision_score(all_labels, all_preds)
         train_recall = recall_score(all_labels, all_preds)
-
-        val_model(model, val_loader)
-        val_epoch_f1 = f1_score(all_labels, all_preds)
-        val_accuracy_score = np.mean(np.array(all_preds) == np.array(all_labels))
-        val_precision = precision_score(all_labels, all_preds)
-        val_recall = recall_score(all_labels, all_preds)
         
         logging.info(f"Epoch {epoch+1}: Loss = {running_loss / len(dataloader):.4f}, Train F1 = {train_epoch_f1:.4f}, Train Accuracy = {train_accuracy_score:.4f}, Train Precision = {train_precision:.4f}, Train Recall = {train_recall:.4f}")
-        logging.info(f"Validation F1 = {val_epoch_f1:.4f}, Validation Accuracy = {val_accuracy_score:.4f}, Validation Precision = {val_precision:.4f}, Validation Recall = {val_recall:.4f}")
+        val_model(model, val_loader)
 
         if train_epoch_f1 > best_f1:
             best_f1 = train_epoch_f1
@@ -155,13 +149,14 @@ def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3,
             torch.save(model.state_dict(), save_path)
         else:
             patience_counter += 1
+            logging.info(f"No improvement. Early stopping counter: {patience_counter}/{patience}")
         
         if patience_counter >= patience:
             logging.info("Early stopping triggered")
             break
 
 # --- FINAL TESTING ---
-def test_model(model, dataloader, load_path="best_model_script_4.pth"):
+def test_model(model, dataloader, load_path="best_model_roberta_mobilenet.pth"):
     model.load_state_dict(torch.load(load_path))
     model.eval()
     all_preds, all_labels = [], []
@@ -200,5 +195,6 @@ def val_model(model, dataloader):
 model = MultiModalModel().to(device)
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
+logging.info("Starting training with early stopping...")
 train_model(model, train_loader, optimizer, criterion, val_loader)
 test_model(model, test_loader)
