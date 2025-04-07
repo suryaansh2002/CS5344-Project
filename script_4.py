@@ -16,7 +16,8 @@ from tqdm import tqdm
 
 # --- CONFIGURATION ---
 logging.basicConfig(level=logging.INFO)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+logging.info(f"Using device: {device}")
 
 # --- LOAD DATA ---
 df = pd.read_csv("balanced_dataset.csv")
@@ -64,9 +65,9 @@ def collate_fn(batch):
     return images, texts_padded, labels
 
 # --- DATA LOADERS ---
-train_loader = DataLoader(MultiModalDataset(train_df), batch_size=2, shuffle=True, collate_fn=collate_fn)
-val_loader = DataLoader(MultiModalDataset(val_df), batch_size=2, shuffle=False, collate_fn=collate_fn)
-test_loader = DataLoader(MultiModalDataset(test_df), batch_size=2, shuffle=False, collate_fn=collate_fn)
+train_loader = DataLoader(MultiModalDataset(train_df), batch_size=128, shuffle=True, collate_fn=collate_fn)
+val_loader = DataLoader(MultiModalDataset(val_df), batch_size=128, shuffle=False, collate_fn=collate_fn)
+test_loader = DataLoader(MultiModalDataset(test_df), batch_size=128, shuffle=False, collate_fn=collate_fn)
 
 # --- IMAGE MODEL ---
 class ImageModel(nn.Module):
@@ -113,7 +114,7 @@ class MultiModalModel(nn.Module):
         return self.fc(combined).squeeze(1)
 
 # --- TRAIN FUNCTION WITH EARLY STOPPING ---
-def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3, epochs=5, save_path="best_model.pth"):
+def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3, epochs=50, save_path="best_model_script_4.pth"):
     model.train()
     best_f1 = 0
     patience_counter = 0
@@ -160,7 +161,7 @@ def train_model(model, dataloader, optimizer, criterion, val_loader, patience=3,
             break
 
 # --- FINAL TESTING ---
-def test_model(model, dataloader, load_path="best_model.pth"):
+def test_model(model, dataloader, load_path="best_model_script_4.pth"):
     model.load_state_dict(torch.load(load_path))
     model.eval()
     all_preds, all_labels = [], []

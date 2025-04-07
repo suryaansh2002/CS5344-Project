@@ -185,7 +185,7 @@ def evaluate(model, dataloader):
 best_f1 = 0
 patience = 3
 counter = 0
-best_model_path = "best_model.pth"
+best_model_path = "best_model_script_3.pth"
 
 # --- TRAIN LOOP WITH EARLY STOPPING ---
 logging.info("Starting training with early stopping...")
