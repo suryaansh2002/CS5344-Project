@@ -21,7 +21,7 @@ class MultiModalDataset(Dataset):
             image = Image.open(image_path).convert("RGB")
             image = self.image_transform(image)
         except:
-            image = torch.zeros(3, *self.image_transform.transforms[0].size)  # e.g., (3, 224, 224) or (3, 96, 96)
+            image = torch.zeros(3, *self.image_transform.transforms[0].size)  
 
         text_tensor = self.tokenizer(row['cleaned_text'], padding="max_length", truncation=True,
                                      max_length=100, return_tensors="pt")["input_ids"].squeeze(0)
