@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 from torchvision import transforms
 
-# ------------------ Config ------------------
+# ------------------ CONFIG ------------------
 DATA_PATH = "DATA/balanced_dataset.csv"
 IMAGE_SIZE = 96
 BATCH_SIZE = 32
@@ -32,7 +32,6 @@ os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(SAVE_PATH, exist_ok=True)
 
 # ------------------ LOGGING ------------------
-
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 logging.info(f"Using device: {DEVICE}")
 logging.info("Starting script...")
@@ -50,7 +49,6 @@ image_transform = transforms.Compose([
 logging.info("Tokenizer and image transform initialized.")
 
 # --- DATA LOADERS ---
-
 df = pd.read_csv(DATA_PATH)  
 train_df, temp_df = train_test_split(df, test_size=0.6, random_state=42)
 val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
@@ -87,7 +85,6 @@ test_loader = DataLoader(
 logging.info("Data loaders created.")
 
 # --- MODEL, LOSS & OPTIMIZER ---
-
 model = MultiModalModel(alpha=0.5).to(DEVICE)  
 logging.info("Model initialized.")
 criterion = torch.nn.BCEWithLogitsLoss()

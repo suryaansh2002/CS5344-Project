@@ -62,10 +62,8 @@ train_dataset = MultiModalDataset(train_df, text_pipeline, image_transform, imag
 val_dataset = MultiModalDataset(val_df, text_pipeline, image_transform, image_size=IMAGE_SIZE, tokenizer=tokenizer)
 test_dataset = MultiModalDataset(test_df, text_pipeline, image_transform, image_size=IMAGE_SIZE, tokenizer=tokenizer)
 
-# Get the pad token ID from the tokenizer
 pad_token_id = tokenizer.pad_token_id
 
-# Modify the DataLoader creation to pass pad_token_id to collate_fn
 train_loader = DataLoader(
     train_dataset, 
     batch_size=BATCH_SIZE, 
@@ -87,13 +85,12 @@ test_loader = DataLoader(
 logging.info("Data loaders created.")
 
 # --- MODEL, LOSS & OPTIMIZER ---
-
 model = MultiModalModel(tokenizer=tokenizer).to(DEVICE)
 criterion = torch.nn.BCEWithLogitsLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 logging.info("Model initialized.")
 
-# ------------------ Train ------------------
+# ------------------ TRAIN ------------------
 logging.info("Starting training...")
 train_model(
     model=model,
