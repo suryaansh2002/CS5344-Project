@@ -87,12 +87,13 @@ This document outlines the steps to set up your local environment for this proje
 
 After completing these steps, your environment should be set up correctly, and you can proceed with running the project's scripts. Remember to activate the virtual environment every time you start working on this project in a new terminal session.
 
-* Download the MMH150K Dataset, save into 'DATA' folder.
-* Run the EfficientNet-biLSTM model.
+1.    Download the MMH150K Dataset, save into 'DATA' folder from [https://gombru.github.io/2019/10/09/MMHS/](https://gombru.github.io/2019/10/09/MMHS/). A manually annotated multimodal hate speech dataset formed by 150,000 tweets, each one of them containing text and an image.
+
+2.    Run the EfficientNet-biLSTM model.
 ```bash
 python scripts/run_efficientnet_bilstm.py
 ```
-* Run the MobileNet-roBERTa model.
+3.    Run the MobileNet-roBERTa model.
 ```bash
 python scripts/run_mobilenet_roberta.py
 ```
