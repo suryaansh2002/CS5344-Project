@@ -16,6 +16,7 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 from torchvision import transforms
 from plot_alpha_results import plotAlphaResults
+from plot_mobilenet_roberta_final_alpha_metrics import plotroBERTaMobileNet
 
 # ------------------ CONFIG ------------------
 DATA_PATH = "DATA/balanced_dataset.csv"
@@ -163,3 +164,4 @@ logging.info(f"\nFinal Test Metrics (after alpha tuning):\nAccuracy: {acc:.4f}, 
 logging.info(f"Classification Report:\n{report}")
 
 plotAlphaResults()
+plotroBERTaMobileNet()
