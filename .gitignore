@@ -1,8 +1,11 @@
-/multimodal-hate-speech
 .DS_Store
-/env
-*.h5
-/DATA
+/DATA/img_augmented
+/DATA/MMHS150K_GT.json
+/DATA/img_txt
+/DATA/img_resized
+/DATA/splits
+/DATA/hatespeech_keywords.txt
+/DATA/MMHS150K_readme.txt
 *.pth
 *.pt
 /wandb
