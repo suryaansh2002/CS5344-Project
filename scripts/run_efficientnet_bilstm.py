@@ -1,10 +1,9 @@
 import os
 import sys
-
+import shutil
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
-
 import torch
 import pandas as pd
 import logging
@@ -16,6 +15,7 @@ from training.evaluate import evaluate
 from transformers import AutoTokenizer
 from sklearn.model_selection import train_test_split
 from torchvision import transforms
+from plot_bilstm_efficientnet_metrics import plotbiLSTM_EfficientNET
 
 # ------------------ Config ------------------
 DATA_PATH = "DATA/balanced_dataset.csv"
@@ -27,9 +27,26 @@ LR = 1e-3
 SAVE_PATH = "checkpoints/bilstm_efficientnet/"
 LOG_DIR = "logs/bilstm_efficientnet/"
 DEVICE = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu") 
+# Function to clear the directory
+def clear_log_dir(log_dir):
+    # Check if the directory exists
+    if os.path.exists(log_dir):
+        # Remove all files inside the directory
+        for filename in os.listdir(log_dir):
+            file_path = os.path.join(log_dir, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Delete file
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Delete folder and its contents
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+
 os.makedirs("checkpoints", exist_ok=True)
+clear_log_dir(LOG_DIR)
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(SAVE_PATH, exist_ok=True)
+
 
 # ------------------ LOGGING ------------------
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
@@ -54,6 +71,7 @@ df = pd.read_csv(DATA_PATH)
 train_df, temp_df = train_test_split(df, test_size=0.6, random_state=42)
 val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
 
+# change to train whole dataset
 train_df = train_df.head(100)  
 val_df = val_df.head(20)     
 test_df = test_df.head(20)   
@@ -110,3 +128,5 @@ logging.info("Evaluating the model on the test set...")
 acc, f1, precision, recall, report = evaluate(model, test_loader, DEVICE)
 logging.info(f"Test Accuracy: {acc:.4f}, F1 Score: {f1:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}")
 logging.info(f"Classification Report:\n{report}")
+
+plotbiLSTM_EfficientNET()
