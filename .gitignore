@@ -4,5 +4,6 @@
 *.h5
 /DATA
 *.pth
+*.pt
 /wandb
 *.pyc

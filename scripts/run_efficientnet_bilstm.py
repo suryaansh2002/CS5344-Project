@@ -1,12 +1,10 @@
 import os
 import sys
 
-# Add this before any other imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
-# Now your imports should work
 import torch
 import pandas as pd
 import logging
@@ -29,12 +27,11 @@ LR = 1e-3
 SAVE_PATH = "checkpoints/bilstm_efficientnet/"
 LOG_DIR = "logs/bilstm_efficientnet/"
 DEVICE = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu") 
-
-# ------------------ LOGGING ------------------
-
 os.makedirs("checkpoints", exist_ok=True)
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(SAVE_PATH, exist_ok=True)
+
+# ------------------ LOGGING ------------------
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 logging.info("Starting script...")
 logging.info(f"Using device: {DEVICE}")
@@ -57,9 +54,9 @@ df = pd.read_csv(DATA_PATH)
 train_df, temp_df = train_test_split(df, test_size=0.6, random_state=42)
 val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
 
-train_df = train_df.head(100)  # Only take first 100 samples
-val_df = val_df.head(20)      # Adjust validation set accordingly
-test_df = test_df.head(20)    # Adjust test set accordingly
+train_df = train_df.head(100)  
+val_df = val_df.head(20)     
+test_df = test_df.head(20)   
 
 train_dataset = MultiModalDataset(train_df, text_pipeline, image_transform, image_size=IMAGE_SIZE, tokenizer=tokenizer)
 val_dataset = MultiModalDataset(val_df, text_pipeline, image_transform, image_size=IMAGE_SIZE, tokenizer=tokenizer)
@@ -87,7 +84,6 @@ test_loader = DataLoader(
     shuffle=False, 
     collate_fn=lambda x: collate_fn(x, pad_token_id=pad_token_id)
 )
-
 logging.info("Data loaders created.")
 
 # --- MODEL, LOSS & OPTIMIZER ---
