@@ -1,4 +1,6 @@
 /multimodal-hate-speech
 .DS_Store
 /env
+/wandb
+/splits
 *.h5
