@@ -1,14 +1,7 @@
 # Hate Detection in MMH150K Dataset
 
-# Steps to Run:
-- Clone the repository.
-- Download the MMH150K Dataset, save into 'DATA' folder.
-- 
-- ```pip install -r requirements.txt```
-- ```python scripts/run_efficientnet_bilstm.py```
-- ```python scripts/run_mobilenet_roberta.py```
 
-- # Project Setup Instructions
+# Project Setup Instructions
 
 This document outlines the steps to set up your local environment for this project.
 
@@ -100,6 +93,14 @@ This document outlines the steps to set up your local environment for this proje
 
 ## Next Steps
 
-After completing these steps, your environment should be set up correctly, and you can proceed with running the project's scripts or further development as instructed in other documentation.
+After completing these steps, your environment should be set up correctly, and you can proceed with running the project's scripts.
+- Download the MMH150K Dataset, save into 'DATA' folder.
+```bash
+python scripts/run_efficientnet_bilstm.py
+```
+```bash
+python scripts/run_mobilenet_roberta.py
+```
+
 
 Remember to activate the virtual environment every time you start working on this project in a new terminal session.
