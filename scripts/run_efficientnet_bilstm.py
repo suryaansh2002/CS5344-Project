@@ -15,6 +15,7 @@ from training.evaluate import evaluate
 from transformers import AutoTokenizer
 from sklearn.model_selection import train_test_split
 from torchvision import transforms
+from plot_bilstm_efficientnet_metrics import plotbiLSTM_EfficientNET
 
 # ------------------ Config ------------------
 DATA_PATH = "DATA/balanced_dataset.csv"
@@ -70,6 +71,7 @@ df = pd.read_csv(DATA_PATH)
 train_df, temp_df = train_test_split(df, test_size=0.6, random_state=42)
 val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
 
+# change to train whole dataset
 train_df = train_df.head(100)  
 val_df = val_df.head(20)     
 test_df = test_df.head(20)   
@@ -126,3 +128,5 @@ logging.info("Evaluating the model on the test set...")
 acc, f1, precision, recall, report = evaluate(model, test_loader, DEVICE)
 logging.info(f"Test Accuracy: {acc:.4f}, F1 Score: {f1:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}")
 logging.info(f"Classification Report:\n{report}")
+
+plotbiLSTM_EfficientNET()
