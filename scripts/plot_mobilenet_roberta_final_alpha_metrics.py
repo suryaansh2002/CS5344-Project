@@ -4,12 +4,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # --- Config ---
-LOG_PATH = "logs/bilstm_efficientnet"  # Path to your log folder
+LOG_PATH = "logs/mobilenet_roberta/final_model" 
 PLOT_SAVE_DIR = "plots"
 os.makedirs(PLOT_SAVE_DIR, exist_ok=True)
-PLOT_SAVE_PATH = os.path.join(PLOT_SAVE_DIR, "bilstm_efficientnet_metrics.png")
+PLOT_SAVE_PATH = os.path.join(PLOT_SAVE_DIR, "mobilenet_roberta_metrics.png")
 
-def plotbiLSTM_EfficientNET():
+def plotroBERTaMobileNet():
     sns.set_theme(style='darkgrid', palette='pastel', font='sans-serif', font_scale=1, rc=None)
 
     # --- Collect metrics ---
@@ -58,7 +58,7 @@ def plotbiLSTM_EfficientNET():
         linestyle="--"
     )
 
-    plt.title("Training & Validation Metrics — BiLSTM + EfficientNet", fontsize=18, weight='bold')
+    plt.title("Training & Validation Metrics — MobileNet + roBERTa", fontsize=18, weight='bold')
     plt.xlabel("Epoch", fontsize=14)
     plt.ylabel("Score", fontsize=14)
     plt.xticks(fontsize=12)
@@ -70,4 +70,4 @@ def plotbiLSTM_EfficientNET():
     plt.savefig(PLOT_SAVE_PATH, dpi=300)
     plt.show()
 
-# plotbiLSTM_EfficientNET()
+# plotroBERTaMobileNet()

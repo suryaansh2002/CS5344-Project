@@ -54,8 +54,6 @@ def plotAlphaResults():
     )
 
     # --- Plotting ---
-    sns.set_theme(style="whitegrid", context="talk")
-    palette = sns.color_palette("Set2")
 
     plt.figure(figsize=(14, 8))
     ax = sns.lineplot(
@@ -64,7 +62,6 @@ def plotAlphaResults():
         y="Score", 
         hue="Metric", 
         marker="o", 
-        palette=palette,
         linewidth=2.5
     )
 
@@ -89,3 +86,5 @@ def plotAlphaResults():
     plt.tight_layout()
     plt.savefig(PLOT_SAVE_PATH, dpi=300)
     plt.show()
+
+# plotAlphaResults()
