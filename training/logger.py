@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import logging
 
 def log_metrics(epoch, train_metrics, val_metrics, log_dir):
     os.makedirs(log_dir, exist_ok=True)
@@ -12,7 +13,10 @@ def log_metrics(epoch, train_metrics, val_metrics, log_dir):
     }
 
     df = pd.DataFrame([log_data])
-    if not os.path.exists(log_path):
-        df.to_csv(log_path, index=False)
-    else:
-        df.to_csv(log_path, mode='a', header=False, index=False)
+
+    # Check if file exists to determine if we need to write the header
+    file_exists = os.path.exists(log_path)
+    
+    # Write to CSV with header only if file doesn't exist
+    df.to_csv(log_path, mode='a', header=not file_exists, index=False)
+    logging.info('Training metrics saved to csv.')

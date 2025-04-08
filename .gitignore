@@ -11,5 +11,5 @@
 /wandb
 *.pyc
 /venv
-.csv
+*.csv
 .png

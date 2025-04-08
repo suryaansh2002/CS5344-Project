@@ -1,10 +1,9 @@
 import os
 import sys
-
+import shutil
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
-
 import torch
 import pandas as pd
 import logging
@@ -27,9 +26,26 @@ LR = 1e-3
 SAVE_PATH = "checkpoints/bilstm_efficientnet/"
 LOG_DIR = "logs/bilstm_efficientnet/"
 DEVICE = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu") 
+# Function to clear the directory
+def clear_log_dir(log_dir):
+    # Check if the directory exists
+    if os.path.exists(log_dir):
+        # Remove all files inside the directory
+        for filename in os.listdir(log_dir):
+            file_path = os.path.join(log_dir, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Delete file
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Delete folder and its contents
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+
 os.makedirs("checkpoints", exist_ok=True)
+clear_log_dir(LOG_DIR)
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(SAVE_PATH, exist_ok=True)
+
 
 # ------------------ LOGGING ------------------
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
