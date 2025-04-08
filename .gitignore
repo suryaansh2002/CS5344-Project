@@ -6,9 +6,9 @@
 /DATA/splits
 /DATA/hatespeech_keywords.txt
 /DATA/MMHS150K_readme.txt
+/DATA/balanced_dataset.csv
 *.pth
 *.pt
 /wandb
 *.pyc
 /venv
-*.csv
