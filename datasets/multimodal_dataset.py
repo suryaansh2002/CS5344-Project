@@ -4,16 +4,18 @@ from PIL import Image
 from torch.nn.utils.rnn import pad_sequence
 
 class MultiModalDataset(Dataset):
-    def __init__(self, dataframe, tokenizer, image_transform):
-        self.data = dataframe
-        self.tokenizer = tokenizer
+    def __init__(self, dataframe, text_pipeline, image_transform, image_size=224, tokenizer=None):
+        self.dataframe = dataframe
+        self.text_pipeline = text_pipeline
         self.image_transform = image_transform
+        self.image_size = image_size
+        self.tokenizer = tokenizer
 
     def __len__(self):
-        return len(self.data)
+        return len(self.dataframe)
 
     def __getitem__(self, idx):
-        row = self.data.iloc[idx]
+        row = self.dataframe.iloc[idx]
         image_path = row['image_path']
         try:
             image = Image.open(image_path).convert("RGB")
