@@ -10,6 +10,7 @@ os.makedirs(PLOT_SAVE_DIR, exist_ok=True)
 PLOT_SAVE_PATH = os.path.join(PLOT_SAVE_DIR, "bilstm_efficientnet_metrics.png")
 
 def plotbiLSTM_EfficientNET():
+    sns.set_theme(style='darkgrid', palette='pastel', font='sans-serif', font_scale=1, rc=None)
 
     # --- Collect metrics ---
     metrics_file = os.path.join(LOG_PATH, "metrics.csv")

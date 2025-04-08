@@ -15,6 +15,7 @@ PLOT_SAVE_PATH = os.path.join(PLOT_SAVE_DIR, "alpha_val_metrics.png")
 
 # --- Collect metrics ---
 def plotAlphaResults():
+    sns.set_theme(style='darkgrid', palette='pastel', font='sans-serif', font_scale=1, rc=None)
     alpha_results = []
 
     for folder in sorted(os.listdir(LOG_BASE_PATH)):
