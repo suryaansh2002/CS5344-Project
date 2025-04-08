@@ -10,3 +10,6 @@
 *.pt
 /wandb
 *.pyc
+/venv
+.csv
+.png
