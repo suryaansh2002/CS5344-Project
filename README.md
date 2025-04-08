@@ -18,13 +18,7 @@ This document outlines the steps to set up your local environment for this proje
     Open your terminal or command prompt and navigate to the directory where you want to clone the project. Then, use the `git clone` command followed by the repository URL:
 
     ```bash
-    git clone <repository_url>
-    ```
-
-    Replace `<repository_url>` with the actual URL of the project's Git repository. For example:
-
-    ```bash
-    git clone [https://github.com/your-username/your-repository.git](https://github.com/your-username/your-repository.git)
+    git clone [https://github.com/suryaansh2002/CS5344-Project.git](https://github.com/suryaansh2002/CS5344-Project.git)
     ```
 
 2.  **Navigate to the Project Directory:**
@@ -32,10 +26,8 @@ This document outlines the steps to set up your local environment for this proje
     Once the repository is cloned, you need to change your current directory to the newly created project directory. Use the `cd` (change directory) command followed by the repository name:
 
     ```bash
-    cd your-repository
+    cd CS5344-Project
     ```
-
-    Replace `your-repository` with the actual name of the cloned repository directory.
 
 3.  **Create a Virtual Environment:**
 
