@@ -2,7 +2,15 @@
 
 ## About Project
 
-Information placeholder
+### Background
+The proliferation of hate speech on social media platforms poses significant challenges to
+maintaining respectful online environments. While traditional hate speech detection methods rely solely on textual analysis, which makes them ineffective in identifying cyberbullying that emerges from the combination of text and images. In many cases, neither the text nor the image alone is explicitly hateful, but together they convey harmful intent. This is especially common on platforms like Twitter, where users often craft multimodal content to bypass moderation. Therefore, detecting cyberbullying in multimodal publications is crucial, as it enables more accurate and comprehensive identification of harmful content, protecting users from subtle and context-dependent abuse.
+
+### Target
+The project aims to develop a classifier capable of detecting hate
+speech in social media posts by integrating both textual and visual data. By leveraging multimodal
+data analytics, we seek to enhance the accuracy of hate speech detection and provide
+comprehensive insights into the nature of such content
 
 
 ## Project Setup Instructions
