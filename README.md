@@ -1,7 +1,11 @@
 # Hate Detection in MMH150K Dataset
 
+## About Project
 
-# Project Setup Instructions
+Information placeholder
+
+
+## Project Setup Instructions
 
 This document outlines the steps to set up your local environment for this project.
 
