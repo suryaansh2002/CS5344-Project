@@ -20,7 +20,7 @@ from plot_bilstm_efficientnet_metrics import plotbiLSTM_EfficientNET
 # ------------------ Config ------------------
 DATA_PATH = "DATA/balanced_dataset.csv"
 IMAGE_SIZE = 224
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 EPOCHS = 30
 PATIENCE = 3
 LR = 1e-3
@@ -72,9 +72,9 @@ train_df, temp_df = train_test_split(df, test_size=0.6, random_state=42)
 val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
 
 # change to train whole dataset
-train_df = train_df.head(100)  
-val_df = val_df.head(20)     
-test_df = test_df.head(20)   
+# train_df = train_df.head(100)  
+# val_df = val_df.head(20)     
+# test_df = test_df.head(20)   
 
 train_dataset = MultiModalDataset(train_df, text_pipeline, image_transform, image_size=IMAGE_SIZE, tokenizer=tokenizer)
 val_dataset = MultiModalDataset(val_df, text_pipeline, image_transform, image_size=IMAGE_SIZE, tokenizer=tokenizer)
