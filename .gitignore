@@ -4,3 +4,4 @@
 /wandb
 /splits
 *.h5
+/logs
