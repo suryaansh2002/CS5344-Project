@@ -70,10 +70,10 @@ df = pd.read_csv(DATA_PATH)
 train_df, temp_df = train_test_split(df, test_size=0.6, random_state=42)
 val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=42)
 
-# change to whole dataset
-train_df = train_df.head(100)
-val_df = val_df.head(20)
-test_df = test_df.head(20)
+# # change to whole dataset
+# train_df = train_df.head(100)
+# val_df = val_df.head(20)
+# test_df = test_df.head(20)
 
 # --- DATASETS & LOADERS ---
 pad_token_id = tokenizer.pad_token_id
