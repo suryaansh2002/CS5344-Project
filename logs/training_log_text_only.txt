@@ -1,0 +1,13 @@
+2025-04-13 16:02:25,136 - INFO - Starting training for SGDClassifier (Logistic Regression with SGD)...
+2025-04-13 16:02:25,173 - INFO - SGDClassifier Epoch 1: Train Acc: 0.6782, Train Loss: 0.6104, Train F1: 0.6367 | Val Acc: 0.6681, Val Loss: 0.6192, Val F1: 0.6255
+2025-04-13 16:02:25,204 - INFO - SGDClassifier Epoch 2: Train Acc: 0.6893, Train Loss: 0.6064, Train F1: 0.6704 | Val Acc: 0.6800, Val Loss: 0.6146, Val F1: 0.6600
+2025-04-13 16:02:25,236 - INFO - SGDClassifier Epoch 3: Train Acc: 0.6912, Train Loss: 0.6072, Train F1: 0.6769 | Val Acc: 0.6794, Val Loss: 0.6155, Val F1: 0.6646
+2025-04-13 16:02:25,268 - INFO - SGDClassifier Epoch 4: Train Acc: 0.6863, Train Loss: 0.6064, Train F1: 0.6664 | Val Acc: 0.6767, Val Loss: 0.6143, Val F1: 0.6566
+2025-04-13 16:02:25,299 - INFO - SGDClassifier Epoch 5: Train Acc: 0.6855, Train Loss: 0.6075, Train F1: 0.6838 | Val Acc: 0.6762, Val Loss: 0.6151, Val F1: 0.6744
+2025-04-13 16:02:25,330 - INFO - SGDClassifier Epoch 6: Train Acc: 0.6872, Train Loss: 0.6062, Train F1: 0.6677 | Val Acc: 0.6768, Val Loss: 0.6141, Val F1: 0.6567
+2025-04-13 16:02:25,361 - INFO - SGDClassifier Epoch 7: Train Acc: 0.6871, Train Loss: 0.6063, Train F1: 0.6732 | Val Acc: 0.6775, Val Loss: 0.6139, Val F1: 0.6632
+2025-04-13 16:02:25,393 - INFO - SGDClassifier Epoch 8: Train Acc: 0.6890, Train Loss: 0.6066, Train F1: 0.6834 | Val Acc: 0.6797, Val Loss: 0.6145, Val F1: 0.6741
+2025-04-13 16:02:25,424 - INFO - SGDClassifier Epoch 9: Train Acc: 0.6898, Train Loss: 0.6065, Train F1: 0.6747 | Val Acc: 0.6802, Val Loss: 0.6147, Val F1: 0.6644
+2025-04-13 16:02:25,455 - INFO - SGDClassifier Epoch 10: Train Acc: 0.6880, Train Loss: 0.6062, Train F1: 0.6660 | Val Acc: 0.6781, Val Loss: 0.6141, Val F1: 0.6556
+2025-04-13 16:02:25,486 - INFO - SGDClassifier Epoch 11: Train Acc: 0.6858, Train Loss: 0.6074, Train F1: 0.6520 | Val Acc: 0.6749, Val Loss: 0.6151, Val F1: 0.6406
+2025-04-13 16:02:25,518 - INFO - SGDClassifier Epoch 12: Train Acc: 0.6891, Train Loss: 0.6063, Train F1: 0.6758 | Val Acc: 0.6801, Val Loss: 0.6143, Val F1: 0.6663
