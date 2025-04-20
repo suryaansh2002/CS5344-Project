@@ -12,6 +12,26 @@ speech in social media posts by integrating both textual and visual data. By lev
 data analytics, we seek to enhance the accuracy of hate speech detection and provide
 comprehensive insights into the nature of such content
 
+## Key Features
+- Full data preprocessing pipeline for the MMHS150K dataset
+- Class balancing and multimodal data augmentation techniques
+- Two fusion-based architectures:
+  - EfficientNet-B0 + BiLSTM
+  - MobileNetV2 + RoBERTa
+- Comparative evaluation showing significant improvements over text-only baselines
+
+## Dataset
+We used the MMHS150K dataset https://gombru.github.io/2019/10/09/MMHS/, which contains approximately 150,000 tweet-image pairs labeled across multiple hate categories:
+- NotHate
+- Racist
+- Sexist
+- Homophobe
+- Religion
+- OtherHate
+
+For our project, we converted these into a binary classification task (Hate vs NotHate).
+
+
 ## Pipeline
 ### Data Preprocessiong
 In the data preprocessing phase, we conducted three major steps to transform raw data into model-ready format:
@@ -40,15 +60,25 @@ To address class imbalance and enhance model robustness, we implemented comprehe
 We implemented two distinct fusion models, each with unique architectural choices and fusion strategies:
 - **EfficientNet**(for Image Branch) + **BiLSTM**(for Text Branch)
 - **MobileNetV2**(for Image Branch) + **RoBERTa**(for Text Branch)
-#### Confusion Strategy
-For the first confusion model, we choose to condense image and text features into a single dimension
+  
+## Models
+### EfficientNet-B0 + BiLSTM
+- Image feature extraction with EfficientNet-B0
+- Text processing through BiLSTM
+- Learned fusion mechanism via concatenation and fully connected layers
+- Best performance: 72.06% accuracy, 72.17% F1-score
 
-For the second confusion model, we combine image and text embeddings using a weighted average:
-$$
-\text{combined\_feature} = \alpha \cdot \text{image\_feature} + (1-\alpha) \cdot \text{text\_feature}
-$$
-#### Comparison
-![](.\plots\model_comparison_grid.png)
+### MobileNetV2 + RoBERTa
+- Lightweight image processing with MobileNetV2
+- Text encoding with RoBERTa
+- Alpha-weighted fusion strategy
+- Performance: 70.50% accuracy, 68.62% F1-score
+
+## Results
+Our best model (EfficientNet + BiLSTM) achieved a 6.27% F1-score improvement over text-only baselines, demonstrating the value of multimodal approaches for hate speech detection.
+
+
+
 ## Project Setup Instructions
 
 This document outlines the steps to set up your local environment for this project.
