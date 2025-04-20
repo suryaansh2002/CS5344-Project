@@ -2,9 +2,53 @@
 
 ## About Project
 
-Information placeholder
+### Background
+The proliferation of hate speech on social media platforms poses significant challenges to
+maintaining respectful online environments. While traditional hate speech detection methods rely solely on textual analysis, which makes them ineffective in identifying cyberbullying that emerges from the combination of text and images. In many cases, neither the text nor the image alone is explicitly hateful, but together they convey harmful intent. This is especially common on platforms like Twitter, where users often craft multimodal content to bypass moderation. Therefore, detecting cyberbullying in multimodal publications is crucial, as it enables more accurate and comprehensive identification of harmful content, protecting users from subtle and context-dependent abuse.
 
+### Target
+The project aims to develop a classifier capable of detecting hate
+speech in social media posts by integrating both textual and visual data. By leveraging multimodal
+data analytics, we seek to enhance the accuracy of hate speech detection and provide
+comprehensive insights into the nature of such content
 
+## Pipeline
+### Data Preprocessiong
+In the data preprocessing phase, we conducted three major steps to transform raw data into model-ready format:
+- **Label Transformation**: Implemented majority voting system to handle inconsistent annotations and converted complex multiclass labels into binary format for simplified classification:
+  - 0 = NotHate
+  - 1 = Hate (including Racist, Sexist, Homophobe, Religion, OtherHate)
+- **Text Cleaning**: Lowercased all text and removed URLs, mentions,hashtags, numbers, punctuation
+- **Text Tokenization**: Employed Hugging Face's BERT tokenizer ('bert-base-uncased') for advanced language understanding
+Applied standardization techniques with Padding and Truncation to ensured consistent input lengths for model processing
+
+### Data Augmentation
+To address class imbalance and enhance model robustness, we implemented comprehensive augmentation strategies:
+
+- **Text Augmentation for Hate Class**: Applied two random techniques per record to create diverse text variations:
+  - Synonym Replacement using WordNet
+  - Random Word Deletion (word-level dropout)
+  - Random Word Swap
+- **Image Augmentation for Hate Class**: Utilized torchvision to apply one random technique per image:
+    - Rotation transformations
+    - Brightness adjustment
+    - Horizontal/vertical flips
+- **Dataset Balancing**: Achieved perfect balance through targeted sampling:
+    - NotHate: Undersampled to 75,000 samples
+    - Hate: Oversampled to 75,000 samples using combined text and image augmentation
+### Multimodal Fusion Models
+We implemented two distinct fusion models, each with unique architectural choices and fusion strategies:
+- **EfficientNet**(for Image Branch) + **BiLSTM**(for Text Branch)
+- **MobileNetV2**(for Image Branch) + **RoBERTa**(for Text Branch)
+#### Confusion Strategy
+For the first confusion model, we choose to condense image and text features into a single dimension
+
+For the second confusion model, we combine image and text embeddings using a weighted average:
+$$
+\text{combined\_feature} = \alpha \cdot \text{image\_feature} + (1-\alpha) \cdot \text{text\_feature}
+$$
+#### Comparison
+![](.\plots\model_comparison_grid.png)
 ## Project Setup Instructions
 
 This document outlines the steps to set up your local environment for this project.
